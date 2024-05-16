@@ -1,17 +1,25 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(cquidNetworking VERSION 0.1.0 LANGUAGES C CXX)
+cmake_minimum_required(VERSION 3.29)
+set(CMAKE_CXX_STANDARD 11)
+set(target cquidNetworking)
+set(version 0.0.0)
 
-include(CTest)
-enable_testing()
+# Dependencies
+find_package(Boost 1.85.0 REQUIRED)
 
-add_library(cquidNetworking src/base.cpp)
+# Sources
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
+set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+# Build library
+add_library(${target} SHARED
+    src/TCPConnection.cpp   
+    src/TCPServer.cpp
 )
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+# Add include directories
+target_include_directories(${target}
+    PUBLIC 
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        ${Boost_INCLUDE_DIRS}
+    PRIVATE
+)
