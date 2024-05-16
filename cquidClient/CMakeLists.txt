@@ -6,6 +6,16 @@ enable_testing()
 
 add_executable(cquidClient main.cpp)
 
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        cquidNetworking
+)
+
+target_link_directories(${PROJECT_NAME}
+    PUBLIC
+        cquidNetworking
+)
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
