@@ -1,4 +1,4 @@
 # cquid
->>>>>> WORK IN PROGRESS <<<<<<
+## WORK IN PROGRESS
 
 Boilerplate C++ TCP/IP library
