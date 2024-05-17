@@ -34,15 +34,5 @@ namespace cquid
 
             startAccept();
         });
-
-        boost::asio::streambuf buffer;
-
-        connection->socket().async_receive(buffer.prepare(512), [this](const boost::system::error_code& error, size_t bytesTransferred){
-            if (error == boost::asio::error::eof) {
-                std::cout << "Client disconnected properly\n";
-            } else if (error) {
-                throw boost::system::system_error(error);
-            }
-        });
     }
 }
