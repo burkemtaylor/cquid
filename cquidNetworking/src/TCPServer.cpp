@@ -1,5 +1,4 @@
 #include <cquidNetworking/TCPServer.h>
-#include <cquidNetworking/TCPConnection.h>
 #include <iostream>
 namespace cquid
 {
@@ -25,6 +24,8 @@ namespace cquid
         // Create a connection
         auto connection = TCPConnection::create(_ioContext);
 
+        _connections.push_back(connection);
+
         // asynchronously accept the connection
         _acceptor.async_accept(connection->socket(), [connection, this](const boost::system::error_code& error){
             if (!error) {
@@ -32,6 +33,16 @@ namespace cquid
             }
 
             startAccept();
+        });
+
+        boost::asio::streambuf buffer;
+
+        connection->socket().async_receive(buffer.prepare(512), [this](const boost::system::error_code& error, size_t bytesTransferred){
+            if (error == boost::asio::error::eof) {
+                std::cout << "Client disconnected properly\n";
+            } else if (error) {
+                throw boost::system::system_error(error);
+            }
         });
     }
 }
